@@ -9,10 +9,19 @@ const userModel = new mongoose.Schema({
         required: [true, 'email is required'],
         unique: true
     },
+    first_name: {
+        type: String,
+        required: [true, 'provide your firstname']
+    },
+    last_name: {
+        type: String,
+        required: [true, 'provide your lastname']
+    },
+
     password : {
         type: String,
-        required: [true, 'password is required'],
-        unique: true
+        required: [true, 'password is required']
+        
     },
     user_type:  { 
         type: String, 
@@ -42,4 +51,4 @@ userModel.methods.isValidPassword = async function(password) {
 }
 
 
-module.exports = mongoose.model('Users', userModel)
+module.exports = mongoose.model('Registered_Users', userModel)

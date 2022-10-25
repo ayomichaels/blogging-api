@@ -1,6 +1,9 @@
 const express = require('express')
 const {connectDb} = require('./database/connect')
 require('dotenv').config()
+const userRoutes = require('./routes/userRoutes')
+const blogRoutes = require('./routes/blogRoutes')
+
 
 const app = express()
 
@@ -11,6 +14,11 @@ app.use(express.json())
 app.get('/', (req,res)=>{
     res.status(200).json({msg:'homepage working'})
 })
+
+app.use('/',userRoutes)
+app.use('/blog',blogRoutes)
+
+
 
 const start = ()=>{
     try {

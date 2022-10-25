@@ -27,10 +27,14 @@ const blogPost = new mongoose.Schema({
         default: Date.now()// review this if this is talking about last time the blog was read, or how long was spent on the page
     },
     tags: String,
-    timestamp: {
+    createdAt: {
+        type: Date,
         default: Date.now()
-    }
-
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now()
+    },
 })
 
 // - title is required and unique
