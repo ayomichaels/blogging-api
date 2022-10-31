@@ -2,7 +2,7 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const bcrypt = require('bcryptjs')
-
+const Blogpost = require('../models/blogpost')
 const CustomAPIError = require('../errors/custom-error')
 
 const register = async (req,res) =>{
@@ -44,9 +44,10 @@ const login = async (req,res)=>{
         {expiresIn:'1h'}
     )
     
-
-    
-    res.status(200).json({msg:'welcome user', access_token: token, duration: '1hr'})
+     
+    //display user's post (drafts and published) upon login
+    const blogPost = await Blogpost.find({email:email})
+    res.status(200).json({msg:'welcome user', access_token: token, blogPost, duration: '1hr'})
 }
 
 
