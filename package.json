@@ -4,7 +4,7 @@
   "description": "blogging api",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "start": "nodemon index.js"
   },
   "keywords": [
@@ -20,6 +20,7 @@
     "body-parser": "^1.20.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
+    "mongodb-memory-server": "^8.9.3",
     "mongoose": "^6.7.0"
   },
   "devDependencies": {

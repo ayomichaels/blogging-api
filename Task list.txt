@@ -1,8 +1,0 @@
-Reading time is the duration it takes to finish reading the post. You can think of an algorithm on your own, E.g number of lines in thepost * 5secs
-
-ADD TESTS FOR ALL ENDPOINTS
-
-LIST OF BLOGS SHOULD BE VISIBLE BY BOTH LOGGED IN AND NON-LOGGED IN USERS
-
-getListOfPosts
-first get all posts then using the field property only display the title of the post (consult smilga)

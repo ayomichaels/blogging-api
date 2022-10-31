@@ -24,17 +24,17 @@ app.use('/blog',blogRoutes)
 //     console.log(`server is listening on port : ${port}`);
 // })
 
-const start = ()=>{
-    try {
-        connectDb(process.env.MONGO_URI)
-    app.listen(port, ()=>{
-        console.log(`server is listening on port : ${port}`);
-    })
-    } catch (error) {
-        console.log(error);
-    }
-}
+// const start = ()=>{
+//     try {
+//         // connectDb(process.env.MONGO_URI)
+//     app.listen(port, ()=>{
+//         console.log(`server is listening on port : ${port}`);
+//     })
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
-start()
+// start()
 
 module.exports = app

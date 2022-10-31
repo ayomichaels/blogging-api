@@ -21,7 +21,7 @@ const authUser = (req,res,next)=>{
     const decode = jwt.verify(token,process.env.ACCESS_TOKEN)
     // console.log(decode);
     // const expired = decode.exp
-    console.log(`The token will expire at ${expired}`);
+    // console.log(`The token will expire at ${expired}`);
     if (!decode) {
         return res.status(401).json({msg:'unauthorized, token invalid'})
     }

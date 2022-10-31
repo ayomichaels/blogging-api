@@ -41,14 +41,23 @@ const login = async (req,res)=>{
     const token = jwt.sign(
         {username:email},
         process.env.ACCESS_TOKEN,
-        {expiresIn:'30s'}
+        {expiresIn:'1h'}
     )
     
 
     
-    res.status(200).json({msg:'welcome user', access_token: token, duration: '30 seconds'})
+    res.status(200).json({msg:'welcome user', access_token: token, duration: '1hr'})
+}
+
+
+const getAllUsers = async (req,res)=>{
+    // const users = await User.find().select('email first_name')
+    const users = await User.find().sort('-first_name').limit(3)
+
+    res.status(200).json({nbHits: users.length, users})
 }
 module.exports = {
     register,
-    login
+    login,
+    getAllUsers
 }

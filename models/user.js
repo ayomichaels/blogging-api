@@ -26,7 +26,7 @@ const userModel = new mongoose.Schema({
     user_type:  { 
         type: String, 
         required: true, 
-        enum: ['user', 'admin'], 
+        enum: ['user', 'admin',], 
         default: 'user' 
     }
 })
@@ -36,6 +36,7 @@ userModel.pre(
     async function (next) {
         const user = this;
         const hash = await bcrypt.hash(this.password, 10);
+        // if (this.isModified) { return }
 
         this.password = hash;
         next();

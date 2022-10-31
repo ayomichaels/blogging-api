@@ -1,48 +1,54 @@
-// const supertest = require('supertest')
 
-// let server = require('../index')
-
-//test('description', function) for JEST
-
-// test('register a user after providing all details', ()=>{
-//     expect(app())
-// })
-
-
-
-// describe('Register Route', ()=>{
-    
-//     describe('given a an email and password', ()=>{
-//         test('should respond with a 201 status code', async ()=>{
-//             const response = await supertest(app).post('register').send({
-//                 email: 'email',
-//                 password: 'password'
-//             })
-//             expect(response.statusCode).toBe(201)
-//         })
-//     })
-// })
-
+const {connectDb} = require('../database/connect')
 
 const supertest = require('supertest')
 
-let server = require('../index')
+let app = require('../app-test')
+
+const User = require('../models/user')
 
 require('jest')
 jest.setTimeout(30000)
 
+
+//separate test file from production file. Test file should not connect to Database so remove the database connect from that
 describe('User Route', ()=>{
+    // let connection;
+    // let token
 
-    it ('POST /register works', async ()=>{
-        const response = await supertest(server).post('/register')
-        expect(response.status).toBe(201)
-    })
+    // //for this to pass you have to pass the parameters that is needed to register
+    // beforeAll(async ()=>{
+    //     connection = await connectDb(process.env.MONGO_URI)
 
-    // it ('GET /homepage works', async ()=>{
-    //     const response = await supertest(server).get('/')
-    //     console.log(response);
-    //     expect(response.status).toBe(200)
-    // } )
+    //     await User.create({
+    //         email: "lade@gmail.com",
+    //         first_name: "Pero",
+    //         last_name: "Oluwapelumi",
+    //         password: "thtitot040404jr",
+    //         user_type: "user"
+    //     })
+    
+    // })
+
+
+
+    // it ('POST /register works', async ()=>{
+    //     const response = await supertest(app).post('/register').send({
+    //         email: "bolade@gmail.com",
+    //         first_name: "Pero",
+    //         last_name: "Oluwapelumi",
+    //         password: "thtitot040404jr",
+    //         user_type: "user"
+    //     })
+    //     .expect(response.status).toBe(201)
+    // })
+
+    //this passed
+    it ('GET /homepage works', async ()=>{
+        const response = await supertest(app).get('/')
+        console.log(response.body);
+        expect(response.status).toBe(200)
+    } )
 
     
 })
