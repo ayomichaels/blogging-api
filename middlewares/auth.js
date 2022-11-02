@@ -8,7 +8,7 @@ const authUser = (req,res,next)=>{
     //upon LOGIN check for token
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        res.status(401).send('invalid token')
+        res.status(401).send('invalid token, provide correct token')
         throw new CustomAPIError('invalid token', 401)
         
         
@@ -29,4 +29,20 @@ const authUser = (req,res,next)=>{
     next()
 }
 
-module.exports = authUser
+
+const adminAccess = async (req,res,next)=>{
+    const {email} = req.body
+    const user = await User.findOne({email:email})
+    if (!user){
+        throw new CustomAPIError('User not found, kindly register',404) 
+    }
+    if (user.user_type==='user'){
+        return res.status(401).json({msg:'unathorized access'})
+    }
+
+    next()
+}
+module.exports = {
+    authUser,
+    adminAccess
+}
