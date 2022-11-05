@@ -52,11 +52,28 @@ const createPost = async (req,res)=>{
     return res.status(201).json({status:'success', msg: 'post created successfully', blogPost})
 }
 const getAllPosts = async (req,res) =>{
-    const {tags, title, author} = req.query
+    const {tags, title, author, state} = req.query
 
     const queryObject = {}
+    if (state) {
+        queryObject.state = state
+    }
+
+    if (tags) {
+        queryObject.tags = tags
+    }
+
+    if (title) {
+        queryObject.title = title
+    }
+
+    if (author) {
+        queryObject.author = author
+    }
     //implement queryObject search consult smilga
-    let allPosts =   await Blogpost.find({},{_id:0}).select('title')
+    // let allPosts =   await Blogpost.find({},{_id:0}).select('title')
+
+    const allPosts = await Blogpost.find(queryObject, {_id:0})
     //show all post should not show all the details that was passed when creating the blogpost, rather only necessary info should be shown. Use field query. Consult Smilga
     return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
 }
