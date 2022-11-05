@@ -1,3 +1,7 @@
 node_modules
 .env
 Task-list.txt
+script.js
+user.js
+controllers.js
+router.js

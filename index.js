@@ -5,15 +5,16 @@ const userRoutes = require('./routes/userRoutes')
 const blogRoutes = require('./routes/blogRoutes')
 
 
+
 const app = express()
 
 const port = process.env.PORT || 3000
 
 app.use(express.json())
 
-app.get('/', (req,res)=>{
-    res.status(200).json({msg:'homepage working'})
-})
+// app.get('/', (req,res)=>{
+//     res.status(200).json({msg:'homepage working'})
+// })
 
 app.use('/users',userRoutes)
 app.use('/blog',blogRoutes)

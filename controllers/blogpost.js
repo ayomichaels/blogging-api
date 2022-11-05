@@ -2,8 +2,53 @@ const CustomAPIError = require('../errors/custom-error')
 const Blogpost = require('../models/blogpost')
 
 
+const homePage = async (req,res)=>{
+    let allPosts =   await Blogpost.find({},{_id:0}).select('title')
+    return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
+}
+
+//function to count the number of words in a string
+function wordCount(str) { 
+    return str.split(" ").length;
+}
+
 const createPost = async (req,res)=>{
-    const blogPost = await Blogpost.create(req.body)
+    const body = req.body
+    const postBodyCount = wordCount(body.body)
+    console.log(postBodyCount);
+    let reading_time;
+    if (postBodyCount < 200){
+        reading_time = 'less than 1 min'
+    } else if (postBodyCount > 200 && postBodyCount <=250) {
+        reading_time = 'less than 2 mins'
+    }
+
+    else {
+        reading_time = 'less than 4 mins'
+    }
+    // reading_time = (postBodyCount * 3) + 's'
+
+    // let {reading_time, body} = req.body
+    // reading_time = body.length * 3 +'s'
+
+    ///////
+    const blogPost = await Blogpost.create({
+        title: body.title,
+        description: body.description,
+        body: body.body,
+        author: body.author,
+        email: body.email,
+        state: body.state,
+        reading_time: reading_time,
+        tags: body.tags,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+
+
+
+
+
+    })
     return res.status(201).json({status:'success', msg: 'post created successfully', blogPost})
 }
 const getAllPosts = async (req,res) =>{
@@ -40,6 +85,7 @@ const getPosts = async (req,res)=>{
 }
 
 module.exports = {
+    homePage,
     getAllPosts,
     createPost,
     getPosts

@@ -49,8 +49,9 @@ const login = async (req,res)=>{
     )
     
     //display user's posts (drafts and published) upon login
-    const blogPost = await Blogpost.find({email:email},{_id:0})
-    res.status(200).json({msg:'welcome user', access_token: token, blogPost, duration: '1hr'})
+    const yourBlogposts = await Blogpost.find({email:email})
+    const allBlogposts = await Blogpost.find({},{_id:0})
+    res.status(200).json({msg:`welcome ${user.first_name}, your access token will last for 1hr`, access_token: token, totalNumOfYourPosts: yourBlogposts.length, yourBlogposts, numberOfTotalPosts:allBlogposts.length, allBlogposts})
 }
 
 

@@ -15,7 +15,6 @@ const authUser = (req,res,next)=>{
     }
     //extract token from header
     const token = authHeader.split(' ')[1]
-    console.log(token);
     //verify token
     //
     const decode = jwt.verify(token,process.env.ACCESS_TOKEN)

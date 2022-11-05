@@ -15,6 +15,10 @@ const blogPost = new mongoose.Schema({
         required: [true, 'The body of your post cannot be empty']
     },
     author:String,
+    email: {
+        type: String,
+        required: [true, 'input your registered email']
+    },
     state: {
         type: String,
         state: {
@@ -24,8 +28,8 @@ const blogPost = new mongoose.Schema({
     },
     read_count: Number,// find a way to dynamically add the read_count based on the number of times the particular blogpost was opened
     reading_time: {
-        type: Date,
-        default: Date.now()// review this if this is talking about last time the blog was read, or how long was spent on the page
+        type: String
+        // default: Date.now()// review this if this is talking about last time the blog was read, or how long was spent on the page
     },
     tags: String,
     createdAt: {
@@ -35,7 +39,7 @@ const blogPost = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now()
-    },
+    }
 })
 
 // - title is required and unique
