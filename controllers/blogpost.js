@@ -4,6 +4,7 @@ const Blogpost = require('../models/blogpost')
 
 const homePage = async (req,res)=>{
     let allPosts =   await Blogpost.find({},{_id:0}).select('title')
+    
     return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
 }
 
@@ -73,7 +74,7 @@ const getAllPosts = async (req,res) =>{
     //implement queryObject search consult smilga
     // let allPosts =   await Blogpost.find({},{_id:0}).select('title')
 
-    const allPosts = await Blogpost.find(queryObject, {_id:0})
+    const allPosts = await Blogpost.find(queryObject, {_id:0}).limit(3)
     //show all post should not show all the details that was passed when creating the blogpost, rather only necessary info should be shown. Use field query. Consult Smilga
     return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
 }
@@ -101,9 +102,37 @@ const getPosts = async (req,res)=>{
     
 }
 
+const deletePost = async (req,res)=>{
+    const {id:postID} = req.params
+
+    try {
+        const post = await Blogpost.findOneAndDelete({_id:postID})
+        res.status(200).json({msg:'post deleted'})
+    } catch (error) {
+        throw new Error('input correct post ID', 404)
+    }
+}
+
+
+const updatePost = async (req,res)=>{
+    const {id:postID} = req.params
+
+    try {
+        const post = await Blogpost.findOneAndUpdate({_id:postID}, req.body, {
+            new: true,
+            runValidators:true
+        })
+        res.status(200).json({msg:'post updated'})
+    } catch (error) {
+        throw new Error('input correct post ID', 404)
+    }
+}
+
 module.exports = {
     homePage,
     getAllPosts,
     createPost,
-    getPosts
+    getPosts,
+    updatePost,
+    deletePost
 }
