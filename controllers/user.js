@@ -9,7 +9,9 @@ const register = async (req,res) =>{
     //create user
     const {email, password} = req.body
     if (!email || !password ) {
+        return res.status(400).json({msg: 'fill the required fills to register'})
         throw new CustomAPIError('please provide all details needed for registration', 400)
+        
     }
     try {
         const user = await User.create(req.body)
