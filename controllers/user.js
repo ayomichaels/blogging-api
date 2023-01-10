@@ -13,18 +13,23 @@ const register = async (req,res) =>{
         throw new CustomAPIError('please provide all details needed for registration', 400)
         
     }
-    try {
-        const user = await User.create(req.body)
-        //-- hash password before saving to database 
-        res.status(201).json({
-            msg: 'user created successfully',
-            user: user.email,
-            status: user.user_type
-        })
 
-    } catch (error) {
-        throw new CustomAPIError('review your details', 400)
+    const user = await User.create(req.body)
+    if (!user) {
+        return res.status(400).json({msg: 'registration unsuccessful, review details and try again'})
     }
+    // try {
+    //     const user = await User.create(req.body)
+    //     //-- hash password before saving to database 
+    //     return res.status(201).json({
+    //         msg: 'user created successfully',
+    //         user: user.email,
+    //         status: user.user_type
+    //     })
+
+    // } catch (error) {
+    //     throw new CustomAPIError('review your details', 400)
+    // }
     
 
 }

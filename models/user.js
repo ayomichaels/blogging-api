@@ -52,4 +52,5 @@ userModel.methods.isValidPassword = async function(password) {
 }
 
 
-module.exports = mongoose.model('Registered_Users', userModel)
+const User = mongoose.model('Users', userModel)
+module.exports = User

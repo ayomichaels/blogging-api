@@ -33,23 +33,28 @@ const createPost = async (req,res)=>{
     // reading_time = body.length * 3 +'s'
 
     ///////
-    const blogPost = await Blogpost.create({
-        title: body.title,
-        description: body.description,
-        body: body.body,
-        author: body.author,
-        email: body.email,
-        state: body.state,
-        reading_time: reading_time,
-        tags: body.tags,
-        createdAt: Date.now(),
-        updatedAt: Date.now()
+    // const blogPost = await Blogpost.create({
+    //     title: body.title,
+    //     description: body.description,
+    //     body: body.body,
+    //     author: body.author,
+    //     email: body.email,
+    //     state: body.state,
+    //     reading_time: reading_time,
+    //     tags: body.tags,
+    //     createdAt: Date.now(),
+    //     updatedAt: Date.now()
 
 
 
 
 
-    })
+    // })
+
+    //my update
+    const blogPost = await Blogpost.create(req.body)
+    blogPost.reading_time = reading_time
+    await blogPost.save()
     return res.status(201).json({status:'success', msg: 'post created successfully', blogPost})
 }
 const getAllPosts = async (req,res) =>{

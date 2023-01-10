@@ -14,7 +14,10 @@ const blogPost = new mongoose.Schema({
         type: String,
         required: [true, 'The body of your post cannot be empty']
     },
-    author:String,
+    author:{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Users'
+    },
     email: {
         type: String,
         required: [true, 'input your registered email']
@@ -38,7 +41,6 @@ const blogPost = new mongoose.Schema({
     },
     updatedAt: {
         type: Date,
-        default: Date.now()
     }
 })
 
@@ -52,4 +54,5 @@ const blogPost = new mongoose.Schema({
 // - body is required
 // - timestamp
 
-module.exports = mongoose.model('BlogPost',blogPost)
+const BlogPost = mongoose.model('BlogPost',blogPost)
+module.exports = BlogPost
