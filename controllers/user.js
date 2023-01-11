@@ -18,6 +18,12 @@ const register = async (req,res) =>{
     if (!user) {
         return res.status(400).json({msg: 'registration unsuccessful, review details and try again'})
     }
+
+    res.status(201).json({
+        msg: "user created successfully", 
+        user: user.email,
+        status: user.user_type
+    })
     // try {
     //     const user = await User.create(req.body)
     //     //-- hash password before saving to database 
@@ -54,8 +60,12 @@ const login = async (req,res)=>{
         process.env.ACCESS_TOKEN,
         {expiresIn:'1h'}
     )
+
+    console.log(`this is token ${token}`);
     
     //display user's posts (drafts and published) upon login
+    
+    //get user's blogposts using their ID
     const yourBlogposts = await Blogpost.find({email:email})
     const allBlogposts = await Blogpost.find({},{_id:0})
     res.status(200).json({msg:`welcome ${user.first_name}, your access token will last for 1hr`, access_token: token, totalNumOfYourPosts: yourBlogposts.length, yourBlogposts, numberOfTotalPosts:allBlogposts.length, allBlogposts})

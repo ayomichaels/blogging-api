@@ -29,7 +29,13 @@ const blogPost = new mongoose.Schema({
         },
         default: 'draft'
     },
-    read_count: Number,// find a way to dynamically add the read_count based on the number of times the particular blogpost was opened
+    
+    views: {
+        type: Number,
+        default : 0
+    },
+    
+    // find a way to dynamically add the read_count based on the number of times the particular blogpost was opened
     reading_time: {
         type: String
         // default: Date.now()// review this if this is talking about last time the blog was read, or how long was spent on the page

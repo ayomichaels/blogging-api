@@ -84,9 +84,27 @@ const getAllPosts = async (req,res) =>{
     return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
 }
 
+
+const getPost = async (req,res)=>{
+    const {id:blogID} = req.params
+    console.log(blogID);
+
+    const blogPost = await Blogpost.findById(blogID)
+
+    if (!blogPost) {return res.status(400).send('NO POST WITH THIS ID, INPUT CORRECT ID')}
+
+    blogPost.views+=1
+    await blogPost.save()
+
+    return res.status(200).json(blogPost)
+}
+
+
+//this is to get posts using request query
 const getPosts = async (req,res)=>{
     //get posts by name of author
     const {name} = req.query
+    const {blogID} = req.params
     console.log(name);
     const queryObject = {}
 
@@ -96,6 +114,8 @@ const getPosts = async (req,res)=>{
 
     // }
     
+
+    //STARTS HERE: See if you need anything here
     //using regex for case sensitivity
     try {
         const blogPosts = await Blogpost.find({author : {$regex : name, $options : 'i'}},{_id:0}) //works but you have to write the full name of the author use regex. 
@@ -104,8 +124,12 @@ const getPosts = async (req,res)=>{
     } catch (error) {
         throw new CustomAPIError(`No posts found with author : ${name}`)
     }
+
+    
     
 }
+
+
 
 const deletePost = async (req,res)=>{
     const {id:postID} = req.params
@@ -127,7 +151,9 @@ const updatePost = async (req,res)=>{
             new: true,
             runValidators:true
         })
-        res.status(200).json({msg:'post updated'})
+        post.updatedAt = Date.now()
+        await post.save()
+        res.status(200).json({msg:'post updated', post})
     } catch (error) {
         throw new Error('input correct post ID', 404)
     }
@@ -137,6 +163,7 @@ module.exports = {
     homePage,
     getAllPosts,
     createPost,
+    getPost,
     getPosts,
     updatePost,
     deletePost

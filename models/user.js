@@ -23,6 +23,7 @@ const userModel = new mongoose.Schema({
         required: [true, 'password is required']
         
     },
+    
     user_type:  { 
         type: String, 
         required: true, 
@@ -30,6 +31,7 @@ const userModel = new mongoose.Schema({
         default: 'user' 
     }
 })
+
 
 userModel.pre(
     'save',
