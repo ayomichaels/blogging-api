@@ -4,7 +4,7 @@ require('dotenv').config()
 const userRoutes = require('./routes/userRoutes')
 const blogRoutes = require('./routes/blogRoutes')
 
-
+const {homePage} = require('./controllers/blogpost')
 
 const app = express()
 
@@ -13,9 +13,7 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-// app.get('/', (req,res)=>{
-//     res.status(200).json({msg:'homepage working'})
-// })
+app.get('/', homePage)
 
 app.use('/users',userRoutes)
 app.use('/blog',blogRoutes)

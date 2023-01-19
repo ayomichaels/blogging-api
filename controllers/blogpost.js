@@ -1,9 +1,12 @@
 const CustomAPIError = require('../errors/custom-error')
 const Blogpost = require('../models/blogpost')
 
+const {userAccess} = require('../middlewares/auth')
+
 
 const homePage = async (req,res)=>{
-    let allPosts =   await Blogpost.find({},{_id:0}).select('title')
+    let allPosts =   await Blogpost.find({},{_id:0, author: 0})// hid the author's id and the post id because the id is needed to update/delete the post.
+    // Can i optimize this such that to update/delete any post the jwt will be decoded and the email must match the email of the user that wants to access the post to make changes
     
     return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
 }
@@ -57,8 +60,10 @@ const createPost = async (req,res)=>{
     await blogPost.save()
     return res.status(201).json({status:'success', msg: 'post created successfully', blogPost})
 }
+
+//get all posts
 const getAllPosts = async (req,res) =>{
-    const {tags, title, author, state} = req.query
+    const {tags, title, author, state, page=1, limit=10} = req.query
 
     const queryObject = {}
     if (state) {
@@ -79,7 +84,14 @@ const getAllPosts = async (req,res) =>{
     //implement queryObject search consult smilga
     // let allPosts =   await Blogpost.find({},{_id:0}).select('title')
 
-    const allPosts = await Blogpost.find(queryObject, {_id:0}).limit(3)
+    // const allPosts = await Blogpost.find(queryObject, {_id:0}).limit(limit).skip((page-1)*limit)
+
+    //title has already been destructured fr
+    const allPosts = await Blogpost.aggregate([
+        {$match : {title: new RegExp(title,'i')}}
+    ])
+
+    // const allPosts = await Blogpost.find()
     //show all post should not show all the details that was passed when creating the blogpost, rather only necessary info should be shown. Use field query. Consult Smilga
     return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
 }
@@ -145,7 +157,16 @@ const deletePost = async (req,res)=>{
 
 const updatePost = async (req,res)=>{
     const {id:postID} = req.params
-
+    const blogPost = await Blogpost.findById(postID)
+    console.log(blogPost.email);
+    console.log('below this line is userAccess');
+    const user = await userAccess(req,res);// in this function only the user's email is returned
+    console.log('below this line is the user');
+    console.log(user);
+    
+    if (blogPost.email!=user) {
+        return res.status(404).send('You are not the author if this blog, you cannot make any changes to the blog')
+    }
     try {
         const post = await Blogpost.findOneAndUpdate({_id:postID}, req.body, {
             new: true,

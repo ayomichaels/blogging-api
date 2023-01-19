@@ -7,6 +7,7 @@ const CustomAPIError = require('../errors/custom-error')
 const authUser = (req,res,next)=>{
     //upon LOGIN check for token
     const authHeader = req.headers.authorization
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         res.status(401).send('invalid token, provide correct token')
         throw new CustomAPIError('invalid token', 401)
@@ -18,7 +19,8 @@ const authUser = (req,res,next)=>{
     //verify token
     //
     const decode = jwt.verify(token,process.env.ACCESS_TOKEN)
-    // console.log(decode);
+    console.log('decoded token is below this line');
+    console.log(decode);
     // const expired = decode.exp
     // console.log(`The token will expire at ${expired}`);
     if (!decode) {
@@ -41,7 +43,23 @@ const adminAccess = async (req,res,next)=>{
 
     next()
 }
+
+
+const userAccess = async (req,res)=>{
+    const authHeader = req.headers.authorization
+    const token = authHeader.split(' ')[1]
+    const decode = jwt.verify(token,process.env.ACCESS_TOKEN)
+    
+    const user = await User.findOne({email:decode.username})
+
+    return user.email
+
+
+}
+
+
 module.exports = {
     authUser,
-    adminAccess
+    adminAccess,
+    userAccess
 }
