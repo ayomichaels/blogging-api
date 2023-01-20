@@ -84,12 +84,12 @@ const getAllPosts = async (req,res) =>{
     //implement queryObject search consult smilga
     // let allPosts =   await Blogpost.find({},{_id:0}).select('title')
 
-    // const allPosts = await Blogpost.find(queryObject, {_id:0}).limit(limit).skip((page-1)*limit)
+    const allPosts = await Blogpost.find(queryObject, {_id:0}).limit(limit).skip((page-1)*limit)
 
-    //title has already been destructured fr
-    const allPosts = await Blogpost.aggregate([
-        {$match : {title: new RegExp(title,'i')}}
-    ])
+    //using regex
+    // const allPosts = await Blogpost.aggregate([
+    //     {$match : {title: new RegExp(title,'i')}}
+    // ])
 
     // const allPosts = await Blogpost.find()
     //show all post should not show all the details that was passed when creating the blogpost, rather only necessary info should be shown. Use field query. Consult Smilga
@@ -159,6 +159,8 @@ const updatePost = async (req,res)=>{
     const {id:postID} = req.params
     const blogPost = await Blogpost.findById(postID)
     console.log(blogPost.email);
+
+    //ensure that only the author of the blog is allowed to make changes to the blog
     console.log('below this line is userAccess');
     const user = await userAccess(req,res);// in this function only the user's email is returned
     console.log('below this line is the user');
