@@ -1,0 +1,95 @@
+{
+  level: 'info',
+  message: 'homepage was requested',
+  metadata: { timestamp: '2023-01-23T13:35:56.684Z' }
+}
+{
+  level: 'info',
+  message: 'HTTP GET /',
+  metadata: {
+    meta: {
+      req: {
+        url: '/',
+        headers: {
+          'accept-encoding': 'gzip, deflate, br',
+          accept: '*/*',
+          'user-agent': 'Thunder Client (https://www.thunderclient.com)',
+          host: 'localhost:3434',
+          connection: 'close'
+        },
+        method: 'GET',
+        httpVersion: '1.1',
+        originalUrl: '/',
+        query: {}
+      },
+      res: { statusCode: 200 },
+      responseTime: 51
+    },
+    timestamp: '2023-01-23T13:35:56.738Z'
+  }
+}
+{
+  level: 'info',
+  message: 'user loged in successfully',
+  metadata: { timestamp: '2023-01-23T13:48:24.027Z' }
+}
+{
+  level: 'info',
+  message: 'HTTP POST /users/login',
+  metadata: {
+    meta: {
+      req: {
+        url: '/users/login',
+        headers: {
+          'content-length': '63',
+          'accept-encoding': 'gzip, deflate, br',
+          accept: '*/*',
+          'user-agent': 'Thunder Client (https://www.thunderclient.com)',
+          authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkb25rb0BnbWFpbC5jb20iLCJpYXQiOjE2Njc2NDQ1NzcsImV4cCI6MTY2NzY0ODE3N30.OuZ-I9UpfQ08v7R1xQDvj5RlX8XwBkbrq3WdAVlxUos',
+          'content-type': 'application/json',
+          host: 'localhost:3434',
+          connection: 'close'
+        },
+        method: 'POST',
+        httpVersion: '1.1',
+        originalUrl: '/users/login',
+        query: {}
+      },
+      res: { statusCode: 200 },
+      responseTime: 350
+    },
+    timestamp: '2023-01-23T13:48:24.128Z'
+  }
+}
+{
+  level: 'info',
+  message: 'user loged in successfully',
+  metadata: { timestamp: '2023-01-23T13:48:37.087Z' }
+}
+{
+  level: 'info',
+  message: 'HTTP POST /users/login',
+  metadata: {
+    meta: {
+      req: {
+        url: '/users/login',
+        headers: {
+          'content-length': '63',
+          'accept-encoding': 'gzip, deflate, br',
+          accept: '*/*',
+          'user-agent': 'Thunder Client (https://www.thunderclient.com)',
+          'content-type': 'application/json',
+          host: 'localhost:3434',
+          connection: 'close'
+        },
+        method: 'POST',
+        httpVersion: '1.1',
+        originalUrl: '/users/login',
+        query: {}
+      },
+      res: { statusCode: 200 },
+      responseTime: 136
+    },
+    timestamp: '2023-01-23T13:48:37.105Z'
+  }
+}

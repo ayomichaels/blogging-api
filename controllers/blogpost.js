@@ -3,8 +3,10 @@ const Blogpost = require('../models/blogpost')
 
 const {userAccess} = require('../middlewares/auth')
 
+const logger = require('../logger/logger')
 
 const homePage = async (req,res)=>{
+    logger.info('homepage was requested')
     let allPosts =   await Blogpost.find({},{_id:0, author: 0})// hid the author's id and the post id because the id is needed to update/delete the post.
     // Can i optimize this such that to update/delete any post the jwt will be decoded and the email must match the email of the user that wants to access the post to make changes
     
@@ -17,6 +19,7 @@ function wordCount(str) {
 }
 
 const createPost = async (req,res)=>{
+    logger.info('new post created')
     const body = req.body
     const postBodyCount = wordCount(body.body)
     console.log(postBodyCount);
@@ -63,6 +66,7 @@ const createPost = async (req,res)=>{
 
 //get all posts
 const getAllPosts = async (req,res) =>{
+    logger.info('all posts was requested')
     const {tags, title, author, state, page=1, limit=10} = req.query
 
     const queryObject = {}
@@ -98,6 +102,7 @@ const getAllPosts = async (req,res) =>{
 
 
 const getPost = async (req,res)=>{
+    logger.info('a post was requested with an ID')
     const {id:blogID} = req.params
     console.log(blogID);
 
@@ -144,6 +149,7 @@ const getPosts = async (req,res)=>{
 
 
 const deletePost = async (req,res)=>{
+    logger.info('post was deleted')
     const {id:postID} = req.params
 
     try {
@@ -156,6 +162,7 @@ const deletePost = async (req,res)=>{
 
 
 const updatePost = async (req,res)=>{
+    logger.info('post updated')
     const {id:postID} = req.params
     const blogPost = await Blogpost.findById(postID)
     console.log(blogPost.email);

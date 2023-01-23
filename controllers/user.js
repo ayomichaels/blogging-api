@@ -4,6 +4,8 @@ require('dotenv').config()
 const bcrypt = require('bcryptjs')
 const Blogpost = require('../models/blogpost')
 const CustomAPIError = require('../errors/custom-error')
+const logger = require('../logger/logger')
+
 
 const register = async (req,res) =>{
     //create user
@@ -18,6 +20,8 @@ const register = async (req,res) =>{
     if (!user) {
         return res.status(400).json({msg: 'registration unsuccessful, review details and try again'})
     }
+
+    logger.info('new user registration successful')
 
     res.status(201).json({
         msg: "user created successfully", 
@@ -54,6 +58,9 @@ const login = async (req,res)=>{
     if (!match) {
         throw new CustomAPIError('password incorrect, input correct password',401)
     }
+
+    logger.info('user loged in successfully')
+
     //create token
     const token = jwt.sign(
         {username:email},
