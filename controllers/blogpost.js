@@ -7,10 +7,24 @@ const logger = require('../logger/logger')
 
 const homePage = async (req,res)=>{
     logger.info('homepage was requested')
-    let allPosts =   await Blogpost.find({},{_id:0, author: 0})// hid the author's id and the post id because the id is needed to update/delete the post.
+    const {tags, title, author, state, page=1, limit=10} = req.query
+
+    //to render server-side and make the structure be easy, the id will be displayed cause it will be needed to require the post upon clicking
+
+    let allPosts =   await Blogpost.find().sort({createdAt: 'desc'}).limit(limit).skip((page-1)*limit)
+
+     // hide the author's id and the post id because the id is needed to update/delete the post.
     // Can i optimize this such that to update/delete any post the jwt will be decoded and the email must match the email of the user that wants to access the post to make changes
-    
-    return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
+    // let allPosts =   await Blogpost.find({},{_id:0, author: 0}).sort({createdAt: 'desc'}) 
+
+   
+
+    //rendering with ejs
+    res.render('articles/index', {articles: allPosts})
+    // res.render('index')
+
+
+    // return res.status(200).json({status:'success', nbHits:allPosts.length, allPosts})
 }
 
 //function to count the number of words in a string
@@ -19,24 +33,23 @@ function wordCount(str) {
 }
 
 const createPost = async (req,res)=>{
-    logger.info('new post created')
     const body = req.body
-    const postBodyCount = wordCount(body.body)
-    console.log(postBodyCount);
-    let reading_time;
-    if (postBodyCount < 200){
-        reading_time = 'less than 1 min'
-    } else if (postBodyCount > 200 && postBodyCount <=250) {
-        reading_time = 'less than 2 mins'
-    }
 
-    else {
-        reading_time = 'less than 4 mins'
-    }
+    //uncomment from here
+    // const postBodyCount = wordCount(body.body)
+    // console.log(postBodyCount);
+    // let reading_time;
+    // if (postBodyCount < 200){
+    //     reading_time = 'less than 1 min'
+    // } else if (postBodyCount > 200 && postBodyCount <=250) {
+    //     reading_time = 'less than 2 mins'
+    // }
+
+    // else {
+    //     reading_time = 'less than 4 mins'
+    // }
     // reading_time = (postBodyCount * 3) + 's'
 
-    // let {reading_time, body} = req.body
-    // reading_time = body.length * 3 +'s'
 
     ///////
     // const blogPost = await Blogpost.create({
@@ -59,9 +72,22 @@ const createPost = async (req,res)=>{
 
     //my update
     const blogPost = await Blogpost.create(req.body)
-    blogPost.reading_time = reading_time
-    await blogPost.save()
-    return res.status(201).json({status:'success', msg: 'post created successfully', blogPost})
+    // blogPost.reading_time = reading_time
+    try {
+        // await blogPost.save()
+        // const blogPost = await Blogpost.create(req.body)
+
+        logger.info('new post created')
+        console.log(blogPost);
+
+        res.redirect(`/blog/${blogPost.slug}`)// redirects to a page showing the new post and also increments the views of the post, disable the increment functionality later.
+    } catch (error) {
+        console.log(error);
+    }
+
+    //rendering with ejs
+    // res.render('articles/new')
+    // return res.status(201).json({status:'success', msg: 'post created successfully', blogPost})
 }
 
 //get all posts
@@ -102,18 +128,36 @@ const getAllPosts = async (req,res) =>{
 
 
 const getPost = async (req,res)=>{
-    logger.info('a post was requested with an ID')
-    const {id:blogID} = req.params
-    console.log(blogID);
+    //using id
+    // logger.info('a post was requested with an ID')
+    // const {id:blogID} = req.params
+    // console.log(`This is the ID of the post : ${blogID}`);
 
-    const blogPost = await Blogpost.findById(blogID)
+    // const blogPost = await Blogpost.findById(blogID)
 
-    if (!blogPost) {return res.status(400).send('NO POST WITH THIS ID, INPUT CORRECT ID')}
+    //using slug
+    const {slug:blogSlug} = req.params
+    console.log(req.params);
+    console.log(`This is the slug of the post : ${blogSlug}`)
+
+    const blogPost = await Blogpost.findOne({slug: blogSlug})
+
+    
+
+    // if (!blogPost) {return res.status(400).send('NO POST WITH THIS ID, INPUT CORRECT ID')}
+
+    if (!blogPost) { 
+        alert('no blogpost found with ID')
+        res.redirect('/')
+
+    }
 
     blogPost.views+=1
     await blogPost.save()
 
-    return res.status(200).json(blogPost)
+    //rendering with ejs
+    res.render('articles/show', {article:blogPost})
+    // return res.status(200).json(blogPost)
 }
 
 

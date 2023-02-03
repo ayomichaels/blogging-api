@@ -5,7 +5,13 @@ const {authUser} = require('../middlewares/auth')
 const {createPost, getAllPosts, getPost, getPosts, homePage, updatePost, deletePost} = require('../controllers/blogpost')
 
 router.route('/').get(homePage)
-router.route('/create-post').post(authUser, createPost)
+// router.route('/create-post').post(authUser, createPost)
+router.get('/new', (req,res)=>{
+    res.render('articles/new')
+})
+router.route('/create-post').post(createPost)
+
+
 
 router.route('/all-posts').get(authUser,getAllPosts)
 

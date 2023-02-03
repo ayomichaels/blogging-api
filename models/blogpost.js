@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 
+const marked = require('marked')
+const slugify = require('slugify')
+
 const blogPost = new mongoose.Schema({
     title: {
         type: String,
@@ -47,18 +50,22 @@ const blogPost = new mongoose.Schema({
     },
     updatedAt: {
         type: Date,
+    },
+    slug: {
+        type: String,
+        required: true,
+        unique: true
     }
 })
 
-// - title is required and unique
-// - description
-// - author
-// - state
-// - read_count
-// - reading_time
-// - tags
-// - body is required
-// - timestamp
+
+blogPost.pre('validate', function(next){
+    if (this.title) {
+        this.slug = slugify(this.title, { lower: true, strict: true })
+    }
+
+    next()
+})
 
 const BlogPost = mongoose.model('BlogPost',blogPost)
 module.exports = BlogPost

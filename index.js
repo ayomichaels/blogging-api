@@ -9,18 +9,19 @@ const blogRoutes = require('./routes/blogRoutes')
 const winston = require('express-winston')
 const logger = require('./logger/logger')
 const port = process.env.PORT || 3000
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-
-//logger
-app.use(winston.logger({
-    winstonInstance: logger,
-    statusLevels: true
-}))
-
 const {homePage} = require('./controllers/blogpost')
 
+
+
+//logger
+// app.use(winston.logger({
+//     winstonInstance: logger,
+//     statusLevels: true
+// }))
+app.set('view engine', 'ejs')
+app.use(express.urlencoded({ extended: false }))
+
+app.use(express.json())
 
 app.get('/', homePage)
 
